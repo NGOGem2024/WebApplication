@@ -6,6 +6,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
+   "homepage": "https://livewebapplication-cqcpe8d5gjg4g8ae.eastasia-01.azurewebsites.net",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -19,4 +20,5 @@
   "devDependencies": {
     "nodemon": "^3.1.4"
   }
+ 
 }

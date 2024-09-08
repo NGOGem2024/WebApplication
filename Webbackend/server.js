@@ -28,17 +28,58 @@
 
 
 
+// const express = require('express');
+// const cors = require('cors');
+// const mongoose = require('mongoose');
+// require('dotenv').config();
+
+// const app = express();
+// const port = process.env.PORT || 5000;
+
+// // Middleware
+// app.use(cors({
+//   origin: process.env.FRONTEND_URL,
+//   optionsSuccessStatus: 200
+// }));
+// app.use(express.json());
+
+// // Logging middleware
+// app.use((req, res, next) => {
+//   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+//   console.log('Request body:', req.body);
+//   next();
+// });
+
+// // Connect to MongoDB
+// const uri = process.env.ATLAS_URI;
+// mongoose.connect(uri, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// })
+// .then(() => console.log("MongoDB connection successful"))
+// .catch(err => console.error("MongoDB connection error: ", err));
+
+// // Routes
+// const dataRouter = require('./routes/data');
+// app.use('/api/data', dataRouter);
+
+// app.listen(port, () => {
+//   console.log(`Server is running on port: ${port}`);
+// });
+
+
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;  // Azure uses 8080 by default
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: 'https://livewebapplication-cqcpe8d5gjg4g8ae.eastasia-01.azurewebsites.net',
+  credentials: true,
   optionsSuccessStatus: 200
 }));
 app.use(express.json());
@@ -62,6 +103,9 @@ mongoose.connect(uri, {
 // Routes
 const dataRouter = require('./routes/data');
 app.use('/api/data', dataRouter);
+
+// Serve static files (including manifest.json)
+app.use(express.static('public'));
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
