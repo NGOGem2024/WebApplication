@@ -1,112 +1,47 @@
-// const express = require('express');
-// const cors = require('cors');
-// const mongoose = require('mongoose');
-// require('dotenv').config();
-
-
-// const app = express();
-// const port = process.env.PORT || 5000;
-
-// app.use(cors());
-// app.use(express.json());
-
-// // Connect to MongoDB
-// const uri = process.env.ATLAS_URI;
-// mongoose.connect(uri, { 
-// })
-// .then(() => console.log("MongoDB onnection successfully"))
-// .catch(err => console.log("MongoDB connection error: ", err));
-
-
-// // Routes
-// const dataRouter = require('./routes/data');
-// app.use('/api/data', dataRouter);
-
-// app.listen(port, () => {
-//   console.log(`Server is running on port: ${port}`);
-// });
-
-
-
-// const express = require('express');
-// const cors = require('cors');
-// const mongoose = require('mongoose');
-// require('dotenv').config();
-
-// const app = express();
-// const port = process.env.PORT || 5000;
-
-// // Middleware
-// app.use(cors({
-//   origin: process.env.FRONTEND_URL,
-//   optionsSuccessStatus: 200
-// }));
-// app.use(express.json());
-
-// // Logging middleware
-// app.use((req, res, next) => {
-//   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-//   console.log('Request body:', req.body);
-//   next();
-// });
-
-// // Connect to MongoDB
-// const uri = process.env.ATLAS_URI;
-// mongoose.connect(uri, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// })
-// .then(() => console.log("MongoDB connection successful"))
-// .catch(err => console.error("MongoDB connection error: ", err));
-
-// // Routes
-// const dataRouter = require('./routes/data');
-// app.use('/api/data', dataRouter);
-
-// app.listen(port, () => {
-//   console.log(`Server is running on port: ${port}`);
-// });
-
-
 const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-require('dotenv').config();
+   const mongoose = require('mongoose');
+   const cors = require('cors');
+   require('dotenv').config();
 
-const app = express();
-const port = process.env.PORT || 8080;  // Azure uses 8080 by default
+   const app = express();
+   const port = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors({
-  origin: 'https://livewebapplication-cqcpe8d5gjg4g8ae.eastasia-01.azurewebsites.net',
-  credentials: true,
-  optionsSuccessStatus: 200
-}));
-app.use(express.json());
+   app.use(cors());
+   app.use(express.json());
 
-// Logging middleware
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  console.log('Request body:', req.body);
-  next();
-});
+   mongoose.connect(process.env.ATLAS_URI, {
+     useNewUrlParser: true,
+     useUnifiedTopology: true,
+   }).then(() => console.log("MongoDB connected successfully"))
+     .catch(err => console.log("MongoDB connection error: ", err));
 
-// Connect to MongoDB
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("MongoDB connection successful"))
-.catch(err => console.error("MongoDB connection error: ", err));
+   // Define a simple schema
+   const DataSchema = new mongoose.Schema({
+     name: String,
+     value: Number
+   });
 
-// Routes
-const dataRouter = require('./routes/data');
-app.use('/api/data', dataRouter);
+   const Data = mongoose.model('Data', DataSchema);
 
-// Serve static files (including manifest.json)
-app.use(express.static('public'));
+   app.get('/api/data', async (req, res) => {
+     try {
+       const allData = await Data.find();
+       res.json(allData);
+     } catch (error) {
+       res.status(500).json({ message: error.message });
+     }
+   });
 
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
-});
+   app.post('/api/data/add', async (req, res) => {
+     const newData = new Data(req.body);
+     try {
+       const savedData = await newData.save();
+       res.status(201).json(savedData);
+     } catch (error) {
+       res.status(400).json({ message: error.message });
+     }
+   });
+
+   app.listen(port, () => {
+     console.log(`Server is running on port: ${port}`);
+   });
