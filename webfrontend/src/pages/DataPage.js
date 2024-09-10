@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchData } from '../services/api';
+import { fetchData } from '../api';
 
 function DataPage() {
   const [data, setData] = useState([]);

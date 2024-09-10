@@ -1,6 +1,6 @@
 {
-  "short_name": "Azure App",
-  "name": "Azuredeploydemo",
+  "short_name": "Your App",
+  "name": "Your Full App Name",
   "icons": [
     {
       "src": "favicon.ico",

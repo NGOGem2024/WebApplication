@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { addData } from '../services/api';
+import { addData } from '../api';
 
 function AddDataPage() {
   const [name, setName] = useState('');
