@@ -1,7 +1,7 @@
 import axios from 'axios';
 
    const API_URL = process.env.NODE_ENV === 'production' 
-     ? 'https://livewebapplication-cqcpe8d5gjg4g8ae.eastasia-01.azurewebsites.net/api'
+     ? 'hellobackend-hggsgxgrcfbscafj.eastasia-01.azurewebsites.net/api'
      : 'http://localhost:5000/api';
 
    export const fetchData = async () => {

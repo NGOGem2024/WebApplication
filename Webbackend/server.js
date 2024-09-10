@@ -47,8 +47,6 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'webfrontend', 'build')));
 
 mongoose.connect(process.env.ATLAS_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
 }).then(() => console.log("MongoDB connected successfully"))
   .catch(err => console.log("MongoDB connection error: ", err));
 
